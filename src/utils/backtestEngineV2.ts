@@ -331,7 +331,7 @@ export const runBacktest = (data: StockData[]): BacktestResults => {
        * If we've already traded today, only use reference to avoid buying at similar prices
        */
       const potentialBuys: number[] = [];
-      const hasTradestoday = buyPricesToday.size > 0 || lastSellPriceToday > 0;
+      //const hasTradestoday = buyPricesToday.size > 0 || lastSellPriceToday > 0;
       const MAX_POSITIONS = 5;
 
       // Determine dynamic threshold based on number of positions
