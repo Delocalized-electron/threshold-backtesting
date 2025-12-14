@@ -35,7 +35,7 @@ export const runBacktest = (data: StockData[]): BacktestResults => {
   console.log('🚀 Reference-Based Engine V2 Started');
 
   // Trading parameters
-  const LOT_SIZE = 10000; // Fixed investment amount per trade: ₹10,000
+  const LOT_SIZE = 100000; // Fixed investment amount per trade: ₹1,00,000
   const THRESHOLD = 0.05; // 5% threshold for buy/sell triggers
 
   /**
@@ -555,7 +555,7 @@ export const runBacktest = (data: StockData[]): BacktestResults => {
   
   const yearsElapsed = totalDays / 365;
   const annualizedProfit = yearsElapsed > 0 ? totalProfit / yearsElapsed : 0;
-  const annualizedROI = (annualizedProfit * 100) / 35000;
+  const annualizedROI = (annualizedProfit * 100) / 350000;
 
   /**
    * RETURN RESULTS
