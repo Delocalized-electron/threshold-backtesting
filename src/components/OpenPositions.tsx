@@ -38,7 +38,21 @@ const OpenPositions: React.FC<OpenPositionsProps> = ({ positions, currentPrice }
               return (
                 <tr key={idx} className="border-b border-amber-200">
                   <td className="py-3 px-4 text-gray-800">{pos.buyDate}</td>
-                  <td className="py-3 px-4 text-right text-gray-800">₹{pos.buyPrice.toFixed(2)}</td>
+                  <td className="py-3 px-4 text-right text-gray-800">
+                    <div className="flex items-center justify-end gap-2">
+                      ₹{pos.buyPrice.toFixed(2)}
+                      {pos.threshold && pos.threshold > 0.05 && pos.threshold < 0.15 && (
+                        <span className="px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                          10% Dip
+                        </span>
+                      )}
+                      {pos.threshold && pos.threshold >= 0.15 && (
+                        <span className="px-2 py-0.5 text-xs font-medium bg-purple-100 text-purple-800 rounded-full">
+                          20% Dip
+                        </span>
+                      )}
+                    </div>
+                  </td>
                   <td className="py-3 px-4 text-right text-blue-600 font-semibold">₹{targetSellPrice.toFixed(2)}</td>
                   <td className="py-3 px-4 text-right text-gray-800">{pos.shares}</td>
                   <td className="py-3 px-4 text-right text-gray-800">₹{invested.toFixed(2)}</td>
@@ -52,6 +66,35 @@ const OpenPositions: React.FC<OpenPositionsProps> = ({ positions, currentPrice }
           </tbody>
         </table>
       </div>
+      
+      {positions.length > 0 && (
+        <div className="bg-gray-50 px-6 py-4 border-t border-gray-200">
+          <div className="flex justify-end items-center gap-6">
+            <div className="text-right">
+              <p className="text-sm text-gray-500">Total Invested</p>
+              <p className="text-lg font-semibold text-gray-800">
+                ₹{positions.reduce((sum, p) => sum + (p.shares * p.buyPrice), 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="text-sm text-gray-500">Current Value</p>
+              <p className="text-lg font-semibold text-gray-800">
+                ₹{positions.reduce((sum, p) => sum + (p.shares * currentPrice), 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="text-sm text-gray-500">Unrealized P/L</p>
+              <p className={`text-lg font-bold ${
+                positions.reduce((sum, p) => sum + (p.shares * currentPrice) - (p.shares * p.buyPrice), 0) >= 0 
+                  ? 'text-green-600' 
+                  : 'text-red-600'
+              }`}>
+                ₹{positions.reduce((sum, p) => sum + (p.shares * currentPrice) - (p.shares * p.buyPrice), 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -18,7 +18,9 @@ export interface StockData {
 export interface Position {
   buyPrice: number;
   shares: number;
-  buyDate: string;
+  date: string;
+  buyDate?: string; // Track when this specific lot was bought
+  threshold?: number; // Track if bought at 5% or 10%
 }
 
 export interface Transaction {
@@ -27,8 +29,11 @@ export interface Transaction {
   price: number;
   shares: number;
   amount: number;
-  boughtAt?: number;
   profit?: number;
+  buyPrice?: number; // For SELL transactions, what was the buy price
+  buyDate?: string; // For SELL transactions, when was it bought
+  boughtAt?: number; // Alias for buyPrice (legacy support)
+  threshold?: number; // Track if bought at 5% or 10%
 }
 
 export interface BacktestResults {
@@ -42,4 +47,7 @@ export interface BacktestResults {
   remainingPositions: Position[];
   totalTrades: number;
   currentPrice: number;
+  annualizedROI?: number;
+  startDate?: string;
+  endDate?: string;
 }

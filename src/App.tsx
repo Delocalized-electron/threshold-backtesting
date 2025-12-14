@@ -14,11 +14,13 @@ function App() {
   const [results, setResults] = useState<BacktestResults | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string>('');
 
   const processCSV = (file: File) => {
     setLoading(true);
     setError(null);
     setResults(null);
+    setFileName(file.name);
 
     Papa.parse<StockData>(file, {
       header: true,
@@ -87,7 +89,10 @@ function App() {
 
           {results && (
             <div className="space-y-6">
-              <SummaryCards results={results} />
+              <SummaryCards 
+                results={results} 
+                stockName={fileName.replace(/\.[^/.]+$/, "")} // Remove extension
+              />
               <TransactionHistory transactions={results.transactions} />
               <OpenPositions positions={results.remainingPositions} currentPrice={results.currentPrice} />
             </div>
